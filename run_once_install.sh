@@ -28,7 +28,8 @@ brew install \
   eza \
   gh \
   mise \
-  direnv
+  direnv \
+  mvnd
 
 # ─── WezTerm ─────────────────────────────────────────────────────────────────
 if ! command -v wezterm &>/dev/null; then
@@ -108,6 +109,27 @@ if command -v mise &>/dev/null; then
   mise install ruff
   mise install awscli
   mise install actionlint
+fi
+
+# ─── Snap apps ───────────────────────────────────────────────────────────────
+echo "→ Installing snap apps..."
+snap list localsend &>/dev/null || sudo snap install localsend
+snap list vlc &>/dev/null       || sudo snap install vlc
+
+# ─── 1Password ───────────────────────────────────────────────────────────────
+if ! command -v 1password &>/dev/null; then
+  echo "→ Installing 1Password..."
+  curl -sS https://downloads.1password.com/linux/keys/1password.asc \
+    | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
+  echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' \
+    | sudo tee /etc/apt/sources.list.d/1password.list
+  sudo apt-get update -q && sudo apt-get install -y 1password
+fi
+
+# ─── LibreOffice ─────────────────────────────────────────────────────────────
+if ! command -v libreoffice &>/dev/null; then
+  echo "→ Installing LibreOffice..."
+  sudo apt-get install -y libreoffice-writer libreoffice-calc
 fi
 
 # ─── git-bash-prompt ─────────────────────────────────────────────────────────
