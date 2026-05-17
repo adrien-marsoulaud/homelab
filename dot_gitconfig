@@ -1,0 +1,39 @@
+[user]
+	email = adrien.marsoulaud@concordnow.com
+	name = adrien-concord
+[alias]
+	sl = !echo && git log --graph --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --abbrev-commit --decorate --date=short -n 70 origin/"$(git rev-parse --abbrev-ref HEAD)" "$(git rev-parse --abbrev-ref HEAD)"
+	c = checkout
+	rh = !git fetch --all --prune && git reset --hard origin/"$(git rev-parse --abbrev-ref HEAD)"
+	lb = for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)    %(align:25,left)%(color:yellow)%(authorname)%(end) %(color:reset)%(refname:strip=3)' --sort=authorname refs/remotes
+	review = !gh search prs --review-requested=@me --state=open
+	browse = !gh browse
+	prs = !gh search prs --author=@me --state=open
+	checks = !gh pr checks
+[core]
+	excludesFile = ~/.gitignore
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	line-numbers = true
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+[rerere]
+	enabled = true
+[branch]
+	sort = -committerdate
+[diff]
+	colorMoved = zebra
+[credential "https://gitlab.com"]
+	helper =
+	helper = !/home/linuxbrew/.linuxbrew/Cellar/glab/1.53.0/bin/glab auth git-credential
+[credential "https://github.com"]
+	helper =
+	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential
