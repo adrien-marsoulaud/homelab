@@ -74,6 +74,12 @@ if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
     "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 fi
 
+# ─── Sublime Text ────────────────────────────────────────────────────────────
+if ! command -v subl &>/dev/null; then
+  echo "→ Installing Sublime Text..."
+  sudo snap install sublime-text --classic
+fi
+
 # ─── fzf ─────────────────────────────────────────────────────────────────────
 if [ ! -d "$HOME/.fzf" ]; then
   echo "→ Installing fzf..."
