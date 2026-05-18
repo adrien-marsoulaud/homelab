@@ -22,7 +22,7 @@ config.inactive_pane_hsb = {
   brightness = 0.5,
 }
 config.colors = {
-  split = '#444444',
+  split = '#928374',
 }
 config.window_frame = {
   active_titlebar_bg = '#1e1e2e',
