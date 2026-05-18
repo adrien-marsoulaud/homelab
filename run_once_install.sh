@@ -132,6 +132,16 @@ if ! command -v libreoffice &>/dev/null; then
   sudo apt-get install -y libreoffice-writer libreoffice-calc
 fi
 
+# ─── Claude Desktop (unofficial Linux build) ─────────────────────────────────
+if ! command -v claude-desktop &>/dev/null; then
+  echo "→ Installing Claude Desktop..."
+  curl -fsSL https://pkg.claude-desktop-debian.dev/KEY.gpg \
+    | sudo gpg --dearmor -o /usr/share/keyrings/claude-desktop.gpg
+  echo "deb [signed-by=/usr/share/keyrings/claude-desktop.gpg arch=amd64,arm64] https://pkg.claude-desktop-debian.dev stable main" \
+    | sudo tee /etc/apt/sources.list.d/claude-desktop.list
+  sudo apt-get update -q && sudo apt-get install -y claude-desktop
+fi
+
 # ─── git-bash-prompt ─────────────────────────────────────────────────────────
 if [ ! -d "$HOME/.bash-git-prompt" ]; then
   echo "→ Installing bash-git-prompt..."
