@@ -153,9 +153,4 @@ bindkey -s '^f' 'fzf-project\n'
 unset LESS;
 
 export PATH="$HOME/ARX-3.9.1/bin:$HOME/.local/share/pnpm:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/opt/apache-maven-3.8.4/bin:$HOME/.local/bin:$HOME/bin:$HOME/.local/share/JetBrains/Toolbox/scripts:$HOME/.fzf/bin:$PATH"
-
-export NVM_DIR="$HOME/.nvm"
-nvm() { unset -f nvm node npm npx; [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"; [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"; nvm "$@"; }
-node() { unset -f nvm node npm npx; [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"; node "$@"; }
-npm() { unset -f nvm node npm npx; [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"; npm "$@"; }
-npx() { unset -f nvm node npm npx; [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"; npx "$@"; }
+eval "$(/home/adrien/.local/bin/mise activate zsh)"
