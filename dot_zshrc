@@ -131,6 +131,10 @@ alias ohmyzsh="vim ~/.oh-my-zsh"
 alias start-front='/home/adrien/Documents/workspace/text/start_front.sh'
 alias start-signer='/home/adrien/Documents/workspace/text/start_signer.sh'
 alias accessorator='/home/adrien/Documents/workspace/text/accessorator.sh'
+# ~/.fzf.zsh runs `fzf --zsh`, which needs fzf 0.48+. Put the git-installed
+# fzf ahead of any distro package first, or an older /usr/bin/fzf wins the
+# lookup and the completion setup fails with "unknown option: --zsh".
+[ -d ~/.fzf/bin ] && export PATH="$HOME/.fzf/bin:$PATH"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git"'
@@ -153,4 +157,6 @@ bindkey -s '^f' 'fzf-project\n'
 unset LESS;
 
 export PATH="$HOME/ARX-3.9.1/bin:$HOME/.local/share/pnpm:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/opt/apache-maven-3.8.4/bin:$HOME/.local/bin:$HOME/bin:$HOME/.local/share/JetBrains/Toolbox/scripts:$HOME/.fzf/bin:$PATH"
-eval "$(/home/adrien/.local/bin/mise activate zsh)"
+# Resolve mise from PATH rather than hardcoding a location — brew installs it
+# to /home/linuxbrew/.linuxbrew/bin, the standalone installer to ~/.local/bin.
+command -v mise >/dev/null && eval "$(mise activate zsh)"
