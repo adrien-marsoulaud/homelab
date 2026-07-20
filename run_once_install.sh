@@ -17,19 +17,44 @@ echo "→ Installing system packages..."
 sudo apt-get update -q
 sudo apt-get install -y -q \
   zsh curl git build-essential \
-  fzf tmux ripgrep \
+  tmux ripgrep \
   fonts-firacode
+# NB: fzf is deliberately NOT installed via apt. Ubuntu ships 0.44.x, which
+# lacks `fzf --zsh` (0.48+), and it would shadow the git checkout below.
 
 # ─── Brew packages ───────────────────────────────────────────────────────────
+# Installed one at a time: a single unavailable formula must not abort the whole
+# bootstrap. Failures are collected and reported at the end instead.
 echo "→ Installing brew packages..."
-brew install \
+BREW_FAILED=()
+
+# mvnd is not in homebrew-core — it ships from the mvnd project's own tap.
+# Homebrew refuses formulae from untrusted taps, so trust it explicitly.
+# mvnd@1 is the stable 1.x line (embeds Maven 3.9.x); plain mvnd is the 2.x
+# preview (embeds Maven 4.0.x).
+if ! brew tap | grep -q '^mvndaemon/mvnd$'; then
+  echo "→ Tapping mvndaemon/mvnd..."
+  brew tap mvndaemon/mvnd
+fi
+brew trust mvndaemon/mvnd
+
+for formula in \
   chezmoi \
   git-delta \
   eza \
   gh \
   mise \
   direnv \
-  mvnd
+  mvndaemon/mvnd/mvnd@1; do
+  if brew list --formula "${formula##*/}" &>/dev/null; then
+    echo "  ✓ ${formula##*/} already installed"
+  elif brew install "$formula"; then
+    echo "  ✓ ${formula##*/}"
+  else
+    echo "  ✗ ${formula##*/} failed" >&2
+    BREW_FAILED+=("$formula")
+  fi
+done
 
 # ─── WezTerm ─────────────────────────────────────────────────────────────────
 if ! command -v wezterm &>/dev/null; then
@@ -49,7 +74,10 @@ fi
 # ─── Oh My Zsh ───────────────────────────────────────────────────────────────
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   echo "→ Installing Oh My Zsh..."
-  RUNZSH=no CHSH=no sh -c \
+  # KEEP_ZSHRC=yes is essential: without it the installer replaces ~/.zshrc
+  # with its own template, silently discarding the one chezmoi just applied
+  # (which is what selects the powerlevel10k theme and sources ~/.p10k.zsh).
+  RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c \
     "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
@@ -85,7 +113,9 @@ fi
 if [ ! -d "$HOME/.fzf" ]; then
   echo "→ Installing fzf..."
   git clone --depth=1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
-  "$HOME/.fzf/install" --all --no-bash --no-fish
+  # --no-update-rc: ~/.zshrc is chezmoi-managed and already sources ~/.fzf.zsh,
+  # so letting the installer append to it just creates drift on every run.
+  "$HOME/.fzf/install" --all --no-bash --no-fish --no-update-rc
 fi
 
 # ─── FiraCode Nerd Font ───────────────────────────────────────────────────────
@@ -149,5 +179,10 @@ if [ ! -d "$HOME/.bash-git-prompt" ]; then
 fi
 
 echo ""
-echo "✅ Homelab bootstrap complete!"
+if [ "${#BREW_FAILED[@]}" -gt 0 ]; then
+  echo "⚠️  Homelab bootstrap finished, but these brew formulae failed:"
+  printf '   - %s\n' "${BREW_FAILED[@]}"
+else
+  echo "✅ Homelab bootstrap complete!"
+fi
 echo "→ Restart your terminal or run: exec zsh"
