@@ -1,0 +1,5 @@
+# Work identity — applied only to repos under ~/Documents/workspace/
+# via the [includeIf] rule in ~/.gitconfig.
+[user]
+	name = adrien-marsoulaud
+	email = 43542564+adrien-marsoulaud@users.noreply.github.com

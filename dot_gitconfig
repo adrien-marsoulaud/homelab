@@ -1,6 +1,12 @@
 [user]
-	email = 43542564+adrien-marsoulaud@users.noreply.github.com
 	name = adrien-marsoulaud
+	email = 43542564+adrien-marsoulaud@users.noreply.github.com
+
+# Work repos get the Concord identity. Trailing slash matters: it makes the
+# pattern match everything beneath the directory, not just the directory
+# itself. Keep this AFTER [user] — later includes win.
+[includeIf "gitdir:~/Documents/workspace/"]
+	path = ~/.gitconfig-work
 [alias]
 	sl = !echo && git log --graph --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --abbrev-commit --decorate --date=short -n 70 origin/"$(git rev-parse --abbrev-ref HEAD)" "$(git rev-parse --abbrev-ref HEAD)"
 	c = checkout
