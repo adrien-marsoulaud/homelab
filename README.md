@@ -7,7 +7,7 @@ My personal environment — dotfiles, scripts, Claude Code configs, and everythi
 One command:
 
 ```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply gh:adrien-marsoulaud/homelab
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply adrien-marsoulaud/homelab
 ```
 
 This will:
