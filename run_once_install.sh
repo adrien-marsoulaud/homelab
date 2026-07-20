@@ -172,6 +172,40 @@ if ! command -v claude-desktop &>/dev/null; then
   sudo apt-get update -q && sudo apt-get install -y claude-desktop
 fi
 
+# ─── GNOME extensions ────────────────────────────────────────────────────────
+# Skipped entirely when there's no GNOME session (server, container, other DE).
+if command -v gnome-extensions &>/dev/null && command -v gnome-shell &>/dev/null; then
+  D2P_UUID="dash-to-panel@jderose9.github.com"
+
+  if [ ! -d "$HOME/.local/share/gnome-shell/extensions/$D2P_UUID" ]; then
+    echo "→ Installing Dash to Panel..."
+    # Query e.g.o for the build matching THIS shell version rather than pinning
+    # a version that will stop resolving after a distro upgrade.
+    shell_ver=$(gnome-shell --version | awk '{print $3}' | cut -d. -f1)
+    d2p_path=$(curl -fsS "https://extensions.gnome.org/extension-info/?pk=1160&shell_version=${shell_ver}" \
+      | jq -r '.download_url // empty')
+    if [ -n "$d2p_path" ]; then
+      tmp_zip=$(mktemp --suffix=.zip)
+      curl -fsSL "https://extensions.gnome.org${d2p_path}" -o "$tmp_zip" \
+        && gnome-extensions install --force "$tmp_zip"
+      rm -f "$tmp_zip"
+    else
+      echo "  ✗ no Dash to Panel build for GNOME Shell ${shell_ver} — skipping" >&2
+    fi
+  fi
+
+  # `gnome-extensions enable` fails until the running shell rescans, which on
+  # Wayland means a full re-login. Setting the key directly takes effect at the
+  # next login either way.
+  if [ -d "$HOME/.local/share/gnome-shell/extensions/$D2P_UUID" ]; then
+    gsettings set org.gnome.shell enabled-extensions "['$D2P_UUID']"
+    # Ubuntu Dock and Dash to Panel both manage a dock; running both gives two.
+    # Ubuntu enables its dock via the session mode, so it must be turned off
+    # through disabled-extensions rather than by editing enabled-extensions.
+    gsettings set org.gnome.shell disabled-extensions "['ubuntu-dock@ubuntu.com']"
+  fi
+fi
+
 # ─── git-bash-prompt ─────────────────────────────────────────────────────────
 if [ ! -d "$HOME/.bash-git-prompt" ]; then
   echo "→ Installing bash-git-prompt..."
