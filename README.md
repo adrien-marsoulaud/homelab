@@ -27,8 +27,14 @@ This will:
 | `~/.tmux.conf` | Tmux — mouse support |
 | `~/.p10k.zsh` | Powerlevel10k prompt config |
 | `~/.config/wezterm/wezterm.lua` | WezTerm — font, theme, keybindings, pane config |
-| `~/.config/mise/config.toml` | mise — trusted paths |
+| `~/.config/mise/config.toml` | mise — tool versions |
 | `~/.config/gh-dash/config.yml` | gh-dash — GitHub PR dashboard |
+| `~/.claude/settings.json` | Claude Code — theme, status line |
+| `~/.claude/statusline-command.sh` | Claude Code — two-line status line (cwd, branch, model, context bar) |
+
+> Only those two files under `~/.claude/` are managed. The rest of that
+> directory — `.credentials.json`, `history.jsonl`, `projects/`, `sessions/` —
+> is local state and must stay out of this repo, which is public.
 
 ## Daily commands
 
