@@ -1,2 +1,14 @@
+# Declaring tools here — rather than running `mise install <tool>` in the
+# bootstrap — is what actually puts them on PATH. `mise install <tool>` only
+# downloads a version; it does not select one, so the tool stays unreachable.
+# `mise install` with no arguments installs everything listed below.
 [tools]
 node = "lts"
+python = "3.12"
+java = "temurin-21"
+jq = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+ruff = "latest"
+awscli = "latest"
+actionlint = "latest"

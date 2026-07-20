@@ -128,17 +128,16 @@ if ! fc-list | grep -qi "FiraCode Nerd Font"; then
 fi
 
 # ─── mise tools ──────────────────────────────────────────────────────────────
+# The tool list lives in ~/.config/mise/config.toml, which chezmoi applies
+# before this script runs. `mise install` with no arguments installs exactly
+# what that file declares.
+#
+# It used to run `mise install <tool>` per tool, which downloads a version but
+# never selects one — so everything except node (pinned in config.toml) was
+# installed yet absent from PATH.
 if command -v mise &>/dev/null; then
   echo "→ Installing mise tools..."
-  mise install node@24
-  mise install python@3.12
-  mise install java@temurin-21
-  mise install jq
-  mise install shellcheck
-  mise install shfmt
-  mise install ruff
-  mise install awscli
-  mise install actionlint
+  mise install
 fi
 
 # ─── Snap apps ───────────────────────────────────────────────────────────────
