@@ -28,9 +28,6 @@
 	sort = -committerdate
 [diff]
 	colorMoved = zebra
-[credential "https://gitlab.com"]
-	helper =
-	helper = !/home/linuxbrew/.linuxbrew/Cellar/glab/1.53.0/bin/glab auth git-credential
 [credential "https://github.com"]
 	helper =
 	helper = !/home/linuxbrew/.linuxbrew/bin/gh auth git-credential

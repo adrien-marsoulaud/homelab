@@ -161,24 +161,21 @@ export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 export PATH="/home/adrien/ARX-3.9.1/bin:$PATH"
 
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/.local/share/amazon-q/shell/bashrc.post.bash" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/bashrc.post.bash"
 
-# Added by Concord CLI installer
-eval "$(register-python-argcomplete concord)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-# Concord Infrastructure Tools
-export PATH="$PATH:/home/adrien/Documents/workspace/concord/concord-local-infra/bin"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-eval "$(/home/adrien/.local/bin/mise activate bash)"
+# Resolve mise from PATH rather than hardcoding a location — brew installs it
+# to /home/linuxbrew/.linuxbrew/bin, the standalone installer to ~/.local/bin.
+command -v mise >/dev/null && eval "$(mise activate bash)"
 
 # Scaleway CLI autocomplete initialization (cached).
 _SCW_COMP="$HOME/.cache/scw_completion.bash"
@@ -186,6 +183,6 @@ _SCW_COMP="$HOME/.cache/scw_completion.bash"
 source "$_SCW_COMP"
 
 # OpenClaw Completion
-source "/home/adrien/.openclaw/completions/openclaw.bash"
+[ -f "$HOME/.openclaw/completions/openclaw.bash" ] && source "$HOME/.openclaw/completions/openclaw.bash"
 export PATH="$HOME/.cargo/bin:$PATH"
 export CARGO_TARGET_DIR="$HOME/.cargo/target"

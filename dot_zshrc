@@ -128,9 +128,6 @@ alias next="git checkout next"
 alias master="git checkout master"
 alias gpfwl="git push --force-with-lease"
 alias ohmyzsh="vim ~/.oh-my-zsh"
-alias start-front='/home/adrien/Documents/workspace/text/start_front.sh'
-alias start-signer='/home/adrien/Documents/workspace/text/start_signer.sh'
-alias accessorator='/home/adrien/Documents/workspace/text/accessorator.sh'
 # ~/.fzf.zsh runs `fzf --zsh`, which needs fzf 0.48+. Put the git-installed
 # fzf ahead of any distro package first, or an older /usr/bin/fzf wins the
 # lookup and the completion setup fails with "unknown option: --zsh".
