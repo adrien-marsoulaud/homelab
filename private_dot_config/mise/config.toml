@@ -6,6 +6,7 @@
 node = "lts"
 python = "3.12"
 java = "temurin-21"
+maven = "3.9"
 jq = "latest"
 shellcheck = "latest"
 shfmt = "latest"

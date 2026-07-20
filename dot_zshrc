@@ -156,11 +156,9 @@ unset LESS;
 # Only add entries that actually exist, so a machine missing any of these
 # doesn't carry dead PATH entries. Listed lowest-priority first; each existing
 # one is prepended, so the last entry here ends up first in PATH.
-# The pinned Maven path is version-specific and breaks on upgrade; `mise use
-# -g maven@3.9` would manage it properly. Kept for now so machines that have
-# it don't lose `mvn` (mvnd provides `mvnd`, not `mvn`).
+# Maven is no longer here: it is declared in ~/.config/mise/config.toml, so
+# the version-pinned /opt/apache-maven-3.8.4/bin entry is gone.
 for _p in \
-  /opt/apache-maven-3.8.4/bin \
   "$HOME/ARX-3.9.1/bin" \
   "$HOME/.local/share/JetBrains/Toolbox/scripts" \
   "$HOME/.local/share/pnpm" \
