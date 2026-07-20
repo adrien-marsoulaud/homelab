@@ -156,7 +156,26 @@ bindkey -s '^f' 'fzf-project\n'
 # Do not clear content when exiting a command
 unset LESS;
 
-export PATH="$HOME/ARX-3.9.1/bin:$HOME/.local/share/pnpm:$HOME/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/opt/apache-maven-3.8.4/bin:$HOME/.local/bin:$HOME/bin:$HOME/.local/share/JetBrains/Toolbox/scripts:$HOME/.fzf/bin:$PATH"
+# Only add entries that actually exist, so a machine missing any of these
+# doesn't carry dead PATH entries. Listed lowest-priority first; each existing
+# one is prepended, so the last entry here ends up first in PATH.
+# The pinned Maven path is version-specific and breaks on upgrade; `mise use
+# -g maven@3.9` would manage it properly. Kept for now so machines that have
+# it don't lose `mvn` (mvnd provides `mvnd`, not `mvn`).
+for _p in \
+  /opt/apache-maven-3.8.4/bin \
+  "$HOME/ARX-3.9.1/bin" \
+  "$HOME/.local/share/JetBrains/Toolbox/scripts" \
+  "$HOME/.local/share/pnpm" \
+  "$HOME/.cargo/bin" \
+  /home/linuxbrew/.linuxbrew/sbin \
+  /home/linuxbrew/.linuxbrew/bin \
+  "$HOME/bin" \
+  "$HOME/.local/bin" \
+  "$HOME/.fzf/bin"; do
+  [ -d "$_p" ] && export PATH="$_p:$PATH"
+done
+unset _p
 # Resolve mise from PATH rather than hardcoding a location — brew installs it
 # to /home/linuxbrew/.linuxbrew/bin, the standalone installer to ~/.local/bin.
 command -v mise >/dev/null && eval "$(mise activate zsh)"
