@@ -29,6 +29,7 @@ This will:
 | `~/.config/wezterm/wezterm.lua` | WezTerm — font, theme, keybindings, pane config |
 | `~/.config/mise/config.toml` | mise — tool versions |
 | `~/.config/gh-dash/config.yml` | gh-dash — GitHub PR dashboard |
+| `~/.config/dash-to-panel.dconf` | Dash to Panel — panel layout, loaded into dconf on apply |
 | `~/.claude/settings.json` | Claude Code — theme, status line |
 | `~/.claude/statusline-command.sh` | Claude Code — two-line status line (cwd, branch, model, context bar) |
 

@@ -1,0 +1,31 @@
+#!/bin/bash
+# Load Dash to Panel settings into dconf.
+#
+# Settings live in dconf (a binary database), not a file, so chezmoi cannot
+# manage them directly. Instead the dump is version-controlled as
+# ~/.config/dash-to-panel.dconf and loaded here.
+#
+# The hash below is what makes this a run_onchange_ script: chezmoi re-runs it
+# only when the dump actually changes, rather than on every apply.
+# dconf dump hash: {{ include "private_dot_config/dash-to-panel.dconf" | sha256sum }}
+#
+# `after_` in the filename matters — this must run once chezmoi has written
+# ~/.config/dash-to-panel.dconf, not before.
+
+set -e
+
+# No dconf means no GNOME (server, container, another desktop) — nothing to do.
+command -v dconf >/dev/null 2>&1 || exit 0
+
+DUMP="$HOME/.config/dash-to-panel.dconf"
+[ -f "$DUMP" ] || exit 0
+
+echo "→ Loading Dash to Panel settings..."
+dconf load /org/gnome/shell/extensions/dash-to-panel/ < "$DUMP"
+
+# NB: panel-positions, panel-sizes, panel-lengths, panel-anchors and
+# panel-element-positions are keyed by monitor ID (e.g. "CMN-0x00000000").
+# On a machine with a different display those entries will not match, and
+# Dash to Panel falls back to its defaults for the monitor it actually finds.
+# Everything not keyed by monitor — styling, dots, animations, previews —
+# applies everywhere.
